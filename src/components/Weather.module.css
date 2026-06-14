@@ -1,0 +1,71 @@
+div.card{
+    min-height:80vh;
+    margin: 60px;
+    background-color: rgba(124, 162, 192, 0.4);
+    backdrop-filter: blur(1px);
+}
+.Cardtext{
+  display: flex;
+    flex-direction: column;   
+    justify-content: space-evenly;
+        height: 100%;
+          flex: 1;    
+} 
+/* 1. La grande carte blanche */
+.card {
+    min-height: 50vh;
+}
+
+/* 2. Le conteneur parent (Body) */
+.contenu {
+    display: flex;
+    flex-direction: column; /* Aligne le titre et la boîte de texte l'un sous l'autre */
+    align-items: center;    /* Centre tout horizontalement */
+    height: 100%;           /* Force le body à prendre toute la hauteur de la carte */
+}
+
+/* 3. Votre boîte de texte qui était trop petite */
+.Cardtext {
+    display: flex;
+    flex-direction: column;   
+    justify-content: space-evenly; /* Distribue l'espace verticalement */
+    align-items: center;      
+    
+    /* LA SOLUTION ICI : */
+    flex: 1;                  /* Force la boîte à s'étirer pour remplir TOUT le vide restant */
+    width: 100%;              /* Permet d'occuper toute la largeur */
+}
+.temperature{
+
+    font-size: 3rem;
+}
+.date{
+display: flex;
+gap: 10px;
+align-items: center;
+font-size: 1.2rem;
+opacity:0.6;
+margin-top: 15px;
+}
+
+.info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Distribue l'espace uniformément entre les blocs et les lignes */
+    align-items: center;            /* Aligne verticalement tout le monde au centre */
+    font-size: 25px;
+    border-radius: 20px;
+    padding: 20px 30px;    
+    gap: 50px;
+    width: 90%;                     /* Prend une belle largeur sur mobile */
+    max-width: 550px;               /* S'arrête de grandir sur PC pour rester élégant */
+    margin: 30px auto 0 auto;       /* Centre tout le rectangle gris horizontalement dans la carte */
+}
+.prop {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;    
+    gap: 10px;              
+    flex: 1;            
+    text-align: center;
+}
