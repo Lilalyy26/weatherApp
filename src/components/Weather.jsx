@@ -57,7 +57,6 @@ function Weather(){
 
 </div>
 
-  {/* BLOC 2 */}
   <div className={styles.prop}>
     <div><Wind /></div>
     <div> Wind </div>
@@ -65,7 +64,6 @@ function Weather(){
   </div>
 
 
-  {/* BLOC 2 */}
   <div className={styles.prop}>
     <div><Humidity /></div>
     <div> Humidity </div>
@@ -73,7 +71,6 @@ function Weather(){
   </div>
 
 
-  {/* BLOC 2 */}
   <div className={styles.prop}>
     <div><SpeedoMeter /></div>
     <div> Wind </div>

@@ -5,24 +5,25 @@ import { useEffect, useState } from 'react';
 import { SetData, resetData } from '../Features/WeatherSlice';
 import { useDispatch } from "react-redux";
 
+const GEOAPIFY_KEY = process.env.REACT_APP_GEOAPIFY_KEY || "1b5200e258b043cb9a1442ff01ef6806";
+const OPENWEATHER_KEY = process.env.REACT_APP_OPENWEATHER_KEY || "7916beba2bf7d2bc4c94d3ba5f45540c";
+
 function SearchBar() {
   const dispatch = useDispatch();
   const [cities, setCities] = useState([]);
   const [unity] = useState('metric');
-  // Initialisé à null pour éviter les crashs au démarrage
   const [geoLocation, setGeoLocation] = useState(null); 
 
   const hasGeolocation = () => {
     return !!navigator.geolocation;
   };
 
-  // Ne fait QUE récupérer les coordonnées GPS
   const getGeoLocation = () => {
     if (!navigator.geolocation) return;
 
     navigator.geolocation.getCurrentPosition((position) => {
       setGeoLocation({
-        lat: position.coords.latitude,  // Corrigé : 'lat' au lieu de 'lan'
+        lat: position.coords.latitude,
         lon: position.coords.longitude
       });
     }, (error) => {
@@ -30,21 +31,19 @@ function SearchBar() {
     });
   };
 
-  // 1. Au montage du composant : on demande la position de l'appareil
   useEffect(() => {
     if (hasGeolocation()) {
       getGeoLocation();
     }
   }, []);
 
-  // 2. Dès que 'geoLocation' change (et qu'il n'est pas nul), on appelle l'API Météo
   useEffect(() => {
-    if (!geoLocation) return; // Sécurité : évite le crash au premier rendu inutile
+    if (!geoLocation) return; 
 
     const getWeatherData = async () => {
       try {
         let response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${geoLocation.lat}&units=${unity}&lon=${geoLocation.lon}&appid=7916beba2bf7d2bc4c94d3ba5f45540c`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${geoLocation.lat}&units=${unity}&lon=${geoLocation.lon}&appid=${OPENWEATHER_KEY}`
         );
         let resultat = await response.json();
         
@@ -58,14 +57,15 @@ function SearchBar() {
     };
 
     getWeatherData();
-  }, [geoLocation, unity, dispatch]); // Dépendances requises
+  }, [geoLocation, unity, dispatch]); 
 
-  // Recherche textuelle pour l'autocomplétion
   const handleInputChange = async (event, value) => {
     if (!value) return;
 
     try {
-      let response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&type=city&format=json&apiKey=73a931bce1484b9d803ea6367efc35ee`);
+      let response = await fetch(
+        `https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&type=city&format=json&apiKey=${GEOAPIFY_KEY}`
+      );
       let resultat = await response.json();
       if (resultat.results) {
         setCities(resultat.results.map((data) => ({
@@ -81,13 +81,11 @@ function SearchBar() {
     }
   };
 
-  // Quand on sélectionne une ville dans la liste
   const handleAutocompleteSelect = (e, value) => {
     if (!value) {
       dispatch(resetData());
       return;
     }
-    // Mettre à jour geoLocation va automatiquement déclencher le 2ème useEffect météo !
     setGeoLocation({
       lat: value.lat,
       lon: value.lon
@@ -108,7 +106,7 @@ function SearchBar() {
           renderInput={(params) => <TextField {...params} label="Enter Your city" />}
           style={{ flexGrow: 1 }}
         />
-        <Button variant="primary" size="lg" onClick={getGeoLocation}>Search</Button>
+        <Button variant="primary" size="lg" onClick={getGeoLocation}>Ma position</Button>
       </Form.Group>
     </Form>
   );
